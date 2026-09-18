@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>Otillion — Cinematic content. Intelligent systems.</title>
+<meta name="description" content="Otillion is a two-desk studio: one team shoots and edits cinematic video, the other builds autonomous AI agents that run business operations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#050506;
+    --raised:#0b0b0e;
+    --line:#1b1b21;
+    --line-soft:#141418;
+    --white:#f6f6f8;
+    --muted:#8d8d97;
+    --media-a:#ff4d8d;
+    --media-b:#ff8a4c;
+    --ai-a:#7b5cff;
+    --ai-b:#4d8bff;
+    --grad:linear-gradient(96deg,#8b5cf6 0%,#ec4899 46%,#fb923c 100%);
+    --grad-media:linear-gradient(96deg,var(--media-a),var(--media-b));
+    --grad-ai:linear-gradient(96deg,var(--ai-a),var(--ai-b));
+    --wrap:1240px;
+    --display:'Archivo',system-ui,sans-serif;
+    --text:'DM Sans',system-ui,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#050506; } }
+  :root[data-theme="dark"]{ --bg:#050506; }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    background:var(--bg);
+    color:var(--white);
+    font-family:var(--text);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{max-width:100%;display:block}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:#ec4899;color:#fff}
+  :focus-visible{outline:2px solid #ec4899;outline-offset:3px;border-radius:4px}
+
+  h1,h2,h3,.display{font-family:var(--display);font-weight:800;letter-spacing:-.03em;line-height:.94;text-transform:uppercase}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 28px;position:relative;z-index:2}
+  .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .grad-text.media{background:var(--grad-media);-webkit-background-clip:text;background-clip:text}
+  .grad-text.ai{background:var(--grad-ai);-webkit-background-clip:text;background-clip:text}
+
+  .eyebrow{
+    font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--muted);font-weight:500;margin-bottom:22px;
+  }
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:13px 26px;border-radius:999px;border:1px solid #26262d;
+    font-size:13.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
+    transition:border-color .25s,background .25s,transform .25s;
+  }
+  .btn:hover{border-color:#3c3c46;background:#0f0f13;transform:translateY(-1px)}
+  .btn-solid{background:#fff;color:#000;border-color:#fff}
+  .btn-solid:hover{background:#e6e6ea;border-color:#e6e6ea}
+  .btn-grad{background:var(--grad);border:none;color:#fff;padding:17px 34px;font-size:13px}
+  .btn-grad:hover{filter:brightness(1.08);transform:translateY(-2px)}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:60;
+    background:rgba(5,5,6,.78);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line-soft);
+  }
+  nav{display:flex;align-items:center;justify-content:space-between;height:74px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .mark{width:30px;height:30px;border-radius:8px;background:#0e0e12;border:1px solid #22222a;display:grid;place-items:center}
+  .brand-name{font-family:var(--display);font-size:13px;font-weight:700;letter-spacing:.04em}
+  .navlinks{display:flex;gap:30px;font-size:14.5px;color:var(--muted)}
+  .navlinks a{transition:color .2s}
+  .navlinks a:hover{color:var(--white)}
+  .navright{display:flex;align-items:center;gap:14px}
+  .lang{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .lang button{
+    padding:7px 13px;background:transparent;border:0;cursor:pointer;
+    font-family:var(--text);font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--muted);
+    transition:background .2s,color .2s;
+  }
+  .lang button.on{background:var(--white);color:#000}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;padding:120px 0 104px;overflow:hidden;border-bottom:1px solid var(--line-soft)}
+  .hero h1{font-size:clamp(42px,8.6vw,112px);max-width:16ch}
+  .hero .lede{
+    margin-top:40px;display:grid;grid-template-columns:1fr auto;gap:46px;align-items:end;
+  }
+  .stat{
+    display:flex;gap:12px;align-items:center;font-size:14px;color:var(--white);
+    padding-left:14px;border-left:2px solid;border-image:var(--grad) 1;margin-bottom:22px;
+  }
+  .lede p{color:var(--muted);max-width:44ch;font-size:16px}
+  .hero-actions{display:flex;gap:12px;padding-bottom:4px}
+
+  /* liquid chrome object */
+  .chrome{
+    position:absolute;top:2%;right:-4%;width:min(680px,52vw);aspect-ratio:1;
+    z-index:1;pointer-events:none;
+  }
+  .chrome-core{
+    position:absolute;inset:0;border-radius:50%;
+    filter:url(#liquid) blur(2px);
+    background:
+      radial-gradient(38% 42% at 30% 28%, #d9b9ff 0%, transparent 62%),
+      radial-gradient(34% 38% at 68% 30%, #ff5fa2 0%, transparent 60%),
+      radial-gradient(42% 46% at 58% 72%, #ff9145 0%, transparent 62%),
+      radial-gradient(30% 34% at 26% 70%, #3ec8ff 0%, transparent 58%),
+      radial-gradient(56% 56% at 50% 50%, #17171d 0%, #050506 78%);
+    animation:swirl 34s linear infinite;
+  }
+  .chrome-glow{
+    position:absolute;inset:-18%;border-radius:50%;
+    background:radial-gradient(circle at 50% 50%, rgba(160,80,255,.30), transparent 62%);
+    filter:blur(60px);
+  }
+  @keyframes swirl{to{transform:rotate(360deg)}}
+  @media (max-width:900px){ .chrome{width:78vw;right:-24%;top:auto;bottom:-6%;opacity:.5} }
+
+  /* ---------- marquee ---------- */
+  .strip{border-bottom:1px solid var(--line-soft);padding:20px 0;overflow:hidden;position:relative}
+  .strip:after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(90deg,var(--bg),transparent 12%,transparent 88%,var(--bg));
+  }
+  .track{display:flex;gap:44px;white-space:nowrap;width:max-content;animation:slide 38s linear infinite}
+  .track span{
+    font-family:var(--display);font-size:13px;font-weight:600;letter-spacing:.16em;
+    text-transform:uppercase;color:#6f6f7a;
+  }
+  .track span.dot{color:#ec4899}
+  @keyframes slide{to{transform:translateX(-50%)}}
+
+  /* ---------- desk sections ---------- */
+  .desk{padding:110px 0;border-bottom:1px solid var(--line-soft)}
+  .desk-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:72px;align-items:center}
+  .desk h2{font-size:clamp(34px,5vw,62px);margin-bottom:34px}
+  .points{list-style:none}
+  .point{
+    display:grid;grid-template-columns:52px 1fr;gap:18px;
+    padding:24px 0;border-top:1px solid var(--line);
+  }
+  .point:last-child{border-bottom:1px solid var(--line)}
+  .point .n{font-size:12px;color:var(--muted);letter-spacing:.08em;display:flex;align-items:center;gap:8px;padding-top:3px}
+  .point .n i{width:5px;height:5px;border-radius:50%;background:var(--media-a);display:block}
+  .ai .point .n i{background:var(--ai-a)}
+  .point h4{font-family:var(--display);font-size:17px;font-weight:700;text-transform:none;letter-spacing:-.01em;margin-bottom:6px}
+  .point p{font-size:14.5px;color:var(--muted);max-width:46ch}
+
+  .visual{
+    position:relative;border-radius:20px;overflow:hidden;aspect-ratio:1/.92;
+    background:#08080b;border:1px solid var(--line);
+  }
+
+  /* lens */
+  .lens{position:absolute;inset:0;display:grid;place-items:center;
+    background:radial-gradient(70% 70% at 50% 45%, #15111a 0%, #060608 72%)}
+  .lens-body{position:relative;width:64%;aspect-ratio:1;border-radius:50%;
+    background:conic-gradient(from 210deg,#101013,#34343c,#0b0b0e,#2a2a31,#101013);
+    box-shadow:0 40px 90px rgba(0,0,0,.7), inset 0 0 0 1px rgba(255,255,255,.06);
+    transform:rotate(-14deg)}
+  .knurl{position:absolute;inset:2%;border-radius:50%;
+    background:repeating-conic-gradient(from 0deg,#26262c 0 1.1deg,#0d0d10 1.1deg 2.2deg);
+    -webkit-mask:radial-gradient(circle,transparent 71%,#000 72%,#000 100%);
+    mask:radial-gradient(circle,transparent 71%,#000 72%,#000 100%)}
+  .lens-glass{position:absolute;inset:16%;border-radius:50%;
+    background:
+      radial-gradient(60% 60% at 36% 32%, rgba(255,214,200,.85) 0%, rgba(255,120,150,.35) 38%, transparent 66%),
+      radial-gradient(80% 80% at 60% 68%, rgba(120,60,200,.45) 0%, transparent 60%),
+      radial-gradient(circle at 50% 50%, #241a22 0%, #070709 78%);
+    box-shadow:inset 0 0 40px rgba(0,0,0,.9), inset 0 0 0 2px rgba(255,255,255,.08)}
+  .lens-glass:after{content:"";position:absolute;inset:0;border-radius:50%;
+    background:linear-gradient(118deg,transparent 42%,rgba(255,255,255,.16) 48%,transparent 54%)}
+  .lens-pupil{position:absolute;inset:38%;border-radius:50%;
+    background:radial-gradient(circle,#0b0b10 0%,#000 70%);
+    box-shadow:0 0 30px rgba(255,90,140,.35)}
+
+  /* neural sphere */
+  .sphere-wrap{position:absolute;inset:0;
+    background:radial-gradient(70% 70% at 50% 50%, #0b1030 0%, #050509 72%)}
+  #sphere{width:100%;height:100%;display:block}
+
+  /* ---------- service cards ---------- */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:64px}
+  .card{
+    background:var(--raised);border:1px solid var(--line);border-radius:16px;
+    padding:28px 26px 24px;display:flex;flex-direction:column;min-height:250px;
+    transition:border-color .25s,transform .25s,background .25s;
+  }
+  .card:hover{border-color:#34343e;transform:translateY(-3px);background:#0e0e12}
+  .card .tag{
+    width:26px;height:26px;border-radius:7px;border:1px solid var(--line);
+    display:grid;place-items:center;font-family:var(--display);font-size:11px;color:var(--muted);margin-bottom:26px;
+  }
+  .card h4{font-family:var(--display);font-size:17.5px;font-weight:700;text-transform:none;letter-spacing:-.01em;margin-bottom:12px}
+  .card p{font-size:14px;color:var(--muted);flex:1}
+  .card .go{margin-top:20px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
+
+  /* ---------- case ---------- */
+  .case{padding:110px 0;border-bottom:1px solid var(--line-soft)}
+  .case h2{font-size:clamp(34px,5.4vw,64px);margin-bottom:46px}
+  .case-card{
+    display:grid;grid-template-columns:1fr 1fr;
+    background:var(--raised);border:1px solid var(--line);border-radius:20px;overflow:hidden;
+  }
+  .case-art{position:relative;min-height:400px;background:#050507;overflow:hidden}
+  .case-art svg{position:absolute;inset:0;width:100%;height:100%}
+  .grain{position:absolute;inset:0;opacity:.16;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .client-chip{
+    position:absolute;top:22px;left:22px;z-index:3;
+    display:inline-flex;align-items:center;gap:9px;
+    padding:8px 15px;border-radius:999px;background:rgba(10,10,12,.72);
+    border:1px solid #2a2a33;backdrop-filter:blur(6px);
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#d8d8de;
+  }
+  .client-chip i{width:9px;height:9px;border-radius:50%;background:var(--grad);display:block}
+  .case-body{padding:40px 38px;display:flex;flex-direction:column;justify-content:center}
+  .case-body>p{font-size:16.5px;color:#d3d3da;max-width:46ch;line-height:1.65}
+  .metrics{margin-top:34px;border-top:1px solid var(--line);padding-top:12px}
+  .metric{
+    display:grid;grid-template-columns:1fr 34px 1fr 1.05fr;gap:12px;align-items:center;
+    padding:18px 0;border-bottom:1px solid var(--line-soft);
+  }
+  .metric:last-child{border-bottom:0}
+  .metric .lbl{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#63636d;display:block;margin-bottom:5px}
+  .metric b{font-family:var(--display);font-size:21px;font-weight:700;letter-spacing:-.02em}
+  .metric .to{color:#4e4e58;text-align:center;font-size:18px}
+  .metric .after b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .metric .what{font-size:13.5px;color:var(--muted);text-align:right}
+
+  /* ---------- cta ---------- */
+  .cta{padding:130px 0 120px;text-align:center;position:relative;overflow:hidden}
+  .cta-glow{
+    position:absolute;left:50%;top:40%;translate:-50% -50%;
+    width:900px;height:420px;border-radius:50%;filter:blur(90px);opacity:.28;
+    background:radial-gradient(circle,#a855f7 0%,#ec4899 45%,transparent 70%);pointer-events:none;
+  }
+  .cta h2{font-size:clamp(36px,7.6vw,92px);max-width:14ch;margin:0 auto 34px}
+  .cta p{color:var(--muted);max-width:42ch;margin:0 auto 34px}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line-soft);padding:56px 0 46px;text-align:center}
+  .foot-mark{width:46px;height:46px;border-radius:12px;background:#0e0e12;border:1px solid #22222a;
+    display:grid;place-items:center;margin:0 auto 14px}
+  .foot-name{font-family:var(--display);font-size:14px;font-weight:700;letter-spacing:.04em}
+  footer .tagline{color:var(--muted);margin-top:10px;font-size:15px}
+  .foot-links{display:flex;gap:26px;justify-content:center;margin-top:28px;font-size:13.5px;color:var(--muted);flex-wrap:wrap}
+  .foot-links a:hover{color:var(--white)}
+  .copy{margin-top:30px;font-size:12px;color:#4d4d56;letter-spacing:.06em}
+
+  /* ---------- language switching ---------- */
+  [data-tr]{display:none}
+  html[data-lang="tr"] [data-en]{display:none}
+  html[data-lang="tr"] [data-tr]{display:inline}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:980px){
+    .desk-grid{grid-template-columns:1fr;gap:44px}
+    .desk-grid .visual{order:-1;aspect-ratio:16/11}
+    .ai .visual{order:-1}
+    .cards{grid-template-columns:1fr}
+    .case-card{grid-template-columns:1fr}
+    .case-art{min-height:300px}
+    .hero .lede{grid-template-columns:1fr;align-items:start;gap:28px}
+    .navlinks{display:none}
+    .hero{padding:78px 0 84px}
+    .desk,.case{padding:78px 0}
+    .metric{grid-template-columns:1fr 26px 1fr;row-gap:4px}
+    .metric .what{grid-column:1/-1;text-align:left}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="liquid">
+    <feTurbulence type="fractalNoise" baseFrequency="0.006 0.009" numOctaves="3" seed="7" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="150" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <symbol id="logo" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="7" fill="none" stroke="#f6f6f8" stroke-width="1.6"/>
+    <path d="M6 18 L18 6" stroke="#f6f6f8" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+</svg>
+
+<header>
+  <nav class="wrap">
+    <a class="brand" href="#top">
+      <span class="mark"><svg width="17" height="17"><use href="#logo"/></svg></span>
+      <span class="brand-name">Otillion</span>
+    </a>
+    <div class="navlinks">
+      <a href="#media"><span data-en>Media</span><span data-tr>Medya</span></a>
+      <a href="#ai"><span data-en>AI agents</span><span data-tr>Yapay zekâ ajanları</span></a>
+      <a href="#cases"><span data-en>Cases</span><span data-tr>Vakalar</span></a>
+    </div>
+    <div class="navright">
+      <div class="lang" role="group" aria-label="Language">
+        <button id="b-en" class="on" onclick="setLang('en')">EN</button>
+        <button id="b-tr" onclick="setLang('tr')">TR</button>
+      </div>
+      <a class="btn btn-solid" href="#contact"><span data-en>Get started</span><span data-tr>Başla</span></a>
+    </div>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="chrome" aria-hidden="true">
+    <div class="chrome-glow"></div>
+    <div class="chrome-core"></div>
+  </div>
+  <div class="wrap">
+    <h1>
+      <span data-en>Cinematic content.<br><span class="grad-text">Intelligent systems.</span></span>
+      <span data-tr>Sinematik içerik.<br><span class="grad-text">Akıllı sistemler.</span></span>
+    </h1>
+    <div class="lede">
+      <div>
+        <div class="stat">
+          <span data-en>5+ years producing content &amp; systems for brands</span>
+          <span data-tr>Markalar için 5+ yıldır içerik ve sistem üretiyoruz</span>
+        </div>
+        <p>
+          <span data-en>A two-desk studio. One team shoots and edits cinematic video. The other builds autonomous AI agents that run business operations.</span>
+          <span data-tr>İki masalı bir stüdyo. Bir ekip sinematik video çeker ve kurgular. Diğeri işletme operasyonlarını yürüten otonom yapay zekâ ajanları kurar.</span>
+        </p>
+      </div>
+      <div class="hero-actions">
+        <a class="btn" href="#contact"><span data-en>Contact us</span><span data-tr>İletişime geç</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="strip" aria-hidden="true">
+  <div class="track" id="track"></div>
+</div>
+
+<!-- DESK ONE -->
+<section class="desk media" id="media">
+  <div class="wrap">
+    <div class="desk-grid">
+      <div>
+        <div class="eyebrow"><span data-en>Desk one — content</span><span data-tr>Masa bir — içerik</span></div>
+        <h2>Otillion <span class="grad-text media" data-en>Media</span><span class="grad-text media" data-tr>Medya</span></h2>
+        <ul class="points">
+          <li class="point">
+            <span class="n"><i></i>01</span>
+            <div>
+              <h4><span data-en>Experience</span><span data-tr>Deneyim</span></h4>
+              <p><span data-en>Five years behind the lens — campaigns, brand films, UGC and social content built for platforms that reward attention.</span><span data-tr>Beş yıldır kameranın arkasındayız — kampanyalar, marka filmleri, UGC ve dikkati ödüllendiren platformlar için sosyal içerik.</span></p>
+            </div>
+          </li>
+          <li class="point">
+            <span class="n"><i></i>02</span>
+            <div>
+              <h4><span data-en>Range of services</span><span data-tr>Hizmet yelpazesi</span></h4>
+              <p><span data-en>From a single product shoot to a full social content engine: strategy, production, photography, editing and delivery.</span><span data-tr>Tek bir ürün çekiminden tam bir sosyal içerik motoruna: strateji, prodüksiyon, fotoğraf, kurgu ve teslim.</span></p>
+            </div>
+          </li>
+          <li class="point">
+            <span class="n"><i></i>03</span>
+            <div>
+              <h4><span data-en>Effectiveness</span><span data-tr>Etkinlik</span></h4>
+              <p><span data-en>Every frame is engineered to convert. We measure creative against performance, not just aesthetics.</span><span data-tr>Her kare dönüşüm için tasarlanır. Yaratıcı işi sadece estetikle değil, performansla ölçeriz.</span></p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="visual" aria-hidden="true">
+        <div class="lens">
+          <div class="lens-body">
+            <div class="knurl"></div>
+            <div class="lens-glass"><div class="lens-pupil"></div></div>
+          </div>
+        </div>
+        <div class="grain"></div>
+      </div>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <span class="tag">A</span>
+        <h4><span data-en>Campaign &amp; UGC video</span><span data-tr>Kampanya &amp; UGC video</span></h4>
+        <p><span data-en>Brand campaigns and user-generated content that move at the speed of the feed.</span><span data-tr>Akışın hızında ilerleyen marka kampanyaları ve kullanıcı içeriği.</span></p>
+        <a class="go grad-text media" href="#contact"><span data-en>Get started</span><span data-tr>Başla</span></a>
+      </article>
+      <article class="card">
+        <span class="tag">B</span>
+        <h4><span data-en>Photography &amp; posts</span><span data-tr>Fotoğraf &amp; gönderi</span></h4>
+        <p><span data-en>Studio and on-location photography, formatted for every channel you publish to.</span><span data-tr>Stüdyo ve mekân fotoğrafçılığı, yayınladığınız her kanala uygun formatta.</span></p>
+        <a class="go grad-text media" href="#contact"><span data-en>Get started</span><span data-tr>Başla</span></a>
+      </article>
+      <article class="card">
+        <span class="tag">G</span>
+        <h4><span data-en>Post-production</span><span data-tr>Post prodüksiyon</span></h4>
+        <p><span data-en>Editing, color, sound and motion — the polish that makes content feel premium.</span><span data-tr>Kurgu, renk, ses ve animasyon — içeriği premium hissettiren cila.</span></p>
+        <a class="go grad-text media" href="#contact"><span data-en>Get started</span><span data-tr>Başla</span></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- DESK TWO -->
+<section class="desk ai" id="ai">
+  <div class="wrap">
+    <div class="desk-grid">
+      <div class="visual" aria-hidden="true">
+        <div class="sphere-wrap"><canvas id="sphere"></canvas></div>
+      </div>
+      <div>
+        <div class="eyebrow"><span data-en>Desk two — systems</span><span data-tr>Masa iki — sistemler</span></div>
+        <h2>Otillion <span class="grad-text ai" data-en>AI</span><span class="grad-text ai" data-tr>Yapay Zekâ</span></h2>
+        <ul class="points">
+          <li class="point">
+            <span class="n"><i></i>01</span>
+            <div>
+              <h4><span data-en>Not a tool — a team</span><span data-tr>Araç değil — ekip</span></h4>
+              <p><span data-en>We don't hand you a dashboard. We deploy autonomous agents that do the work alongside your people.</span><span data-tr>Size bir panel vermiyoruz. Ekibinizin yanında çalışan otonom ajanlar devreye alıyoruz.</span></p>
+            </div>
+          </li>
+          <li class="point">
+            <span class="n"><i></i>02</span>
+            <div>
+              <h4><span data-en>Deep integrations</span><span data-tr>Derin entegrasyonlar</span></h4>
+              <p><span data-en>Agents wired into your CRM, inbox, calendar and data — operating inside the tools you already use.</span><span data-tr>CRM'inize, e-postanıza, takviminize ve verinize bağlı ajanlar — hâlihazırda kullandığınız araçların içinde çalışır.</span></p>
+            </div>
+          </li>
+          <li class="point">
+            <span class="n"><i></i>03</span>
+            <div>
+              <h4><span data-en>Human-in-the-loop</span><span data-tr>İnsan kontrolünde</span></h4>
+              <p><span data-en>Every critical decision passes a human checkpoint. Speed without losing judgement.</span><span data-tr>Her kritik karar bir insan kontrol noktasından geçer. Muhakemeyi kaybetmeden hız.</span></p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <span class="tag">A</span>
+        <h4><span data-en>Outreach agents</span><span data-tr>İletişim ajanları</span></h4>
+        <p><span data-en>Autonomous prospecting and follow-up that fills your pipeline while you sleep.</span><span data-tr>Siz uyurken hattınızı dolduran otonom müşteri arama ve takip.</span></p>
+        <a class="go grad-text ai" href="#contact"><span data-en>Get started</span><span data-tr>Başla</span></a>
+      </article>
+      <article class="card">
+        <span class="tag">B</span>
+        <h4><span data-en>Ops automation</span><span data-tr>Operasyon otomasyonu</span></h4>
+        <p><span data-en>Workflows that run operations end-to-end — scheduling, routing, status, handoff.</span><span data-tr>Operasyonu uçtan uca yürüten akışlar — planlama, yönlendirme, durum, devir.</span></p>
+        <a class="go grad-text ai" href="#contact"><span data-en>Get started</span><span data-tr>Başla</span></a>
+      </article>
+      <article class="card">
+        <span class="tag">G</span>
+        <h4><span data-en>Reporting &amp; insight</span><span data-tr>Raporlama &amp; içgörü</span></h4>
+        <p><span data-en>Agents that read your data and write the report before your Monday meeting.</span><span data-tr>Verinizi okuyup Pazartesi toplantınızdan önce raporu yazan ajanlar.</span></p>
+        <a class="go grad-text ai" href="#contact"><span data-en>Get started</span><span data-tr>Başla</span></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CASE -->
+<section class="case" id="cases">
+  <div class="wrap">
+    <div class="eyebrow"><span data-en>Proof of life</span><span data-tr>Kanıt</span></div>
+    <h2><span data-en>From set to system</span><span data-tr>Setten sisteme</span></h2>
+
+    <div class="case-card">
+      <div class="case-art">
+        <span class="client-chip"><i></i><span data-en>Client — fashion retail</span><span data-tr>Müşteri — moda perakende</span></span>
+        <svg viewBox="0 0 600 460" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#ffffff" stop-opacity=".30"/>
+              <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+            </linearGradient>
+            <radialGradient id="flare" cx="50%" cy="50%">
+              <stop offset="0" stop-color="#fff" stop-opacity=".95"/>
+              <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#17171b"/>
+              <stop offset="1" stop-color="#060608"/>
+            </linearGradient>
+          </defs>
+          <rect width="600" height="460" fill="#08080a"/>
+          <rect y="330" width="600" height="130" fill="url(#floor)"/>
+          <polygon points="168,52 96,460 320,460" fill="url(#beam)"/>
+          <polygon points="452,40 392,460 560,460" fill="url(#beam)" opacity=".5"/>
+          <circle cx="168" cy="56" r="52" fill="url(#flare)"/>
+          <circle cx="452" cy="44" r="30" fill="url(#flare)" opacity=".6"/>
+          <!-- camera rig silhouette -->
+          <g fill="#050506">
+            <rect x="238" y="232" width="118" height="58" rx="9"/>
+            <rect x="346" y="246" width="56" height="30" rx="15"/>
+            <circle cx="404" cy="261" r="17"/>
+            <rect x="262" y="212" width="34" height="22" rx="5"/>
+            <circle cx="276" cy="222" r="15"/>
+            <circle cx="322" cy="222" r="15"/>
+            <rect x="286" y="290" width="12" height="76"/>
+            <polygon points="292,360 244,412 258,412 296,372 334,412 348,412 300,360"/>
+            <rect x="196" y="272" width="10" height="94"/>
+            <rect x="166" y="250" width="70" height="26" rx="6"/>
+          </g>
+          <!-- crew silhouettes -->
+          <g fill="#050506" opacity=".95">
+            <circle cx="120" cy="268" r="17"/>
+            <path d="M96 366c0-28 10-52 24-52s24 24 24 52z"/>
+            <circle cx="486" cy="282" r="15"/>
+            <path d="M465 372c0-26 9-46 21-46s21 20 21 46z"/>
+          </g>
+          <rect y="330" width="600" height="2" fill="#ffffff" opacity=".05"/>
+        </svg>
+        <div class="grain"></div>
+      </div>
+
+      <div class="case-body">
+        <p>
+          <span data-en>We rebuilt their content pipeline and deployed an outreach agent in parallel. The studio kept the brand cinematic; the agent kept the pipeline full.</span>
+          <span data-tr>İçerik hattını yeniden kurduk ve paralelde bir iletişim ajanı devreye aldık. Stüdyo markayı sinematik tuttu; ajan ise satış hattını dolu tuttu.</span>
+        </p>
+        <div class="metrics">
+          <div class="metric">
+            <div><span class="lbl"><span data-en>Before</span><span data-tr>Önce</span></span><b>14 <span data-en>days</span><span data-tr>gün</span></b></div>
+            <div class="to">→</div>
+            <div class="after"><span class="lbl"><span data-en>After</span><span data-tr>Sonra</span></span><b>2 <span data-en>days</span><span data-tr>gün</span></b></div>
+            <div class="what"><span data-en>Content turnaround</span><span data-tr>İçerik teslim süresi</span></div>
+          </div>
+          <div class="metric">
+            <div><span class="lbl"><span data-en>Before</span><span data-tr>Önce</span></span><b>3 <span data-en>reps</span><span data-tr>kişi</span></b></div>
+            <div class="to">→</div>
+            <div class="after"><span class="lbl"><span data-en>After</span><span data-tr>Sonra</span></span><b>1 <span data-en>agent</span><span data-tr>ajan</span></b></div>
+            <div class="what"><span data-en>Outreach capacity</span><span data-tr>İletişim kapasitesi</span></div>
+          </div>
+          <div class="metric">
+            <div><span class="lbl"><span data-en>Before</span><span data-tr>Önce</span></span><b><span data-en>Manual</span><span data-tr>Manuel</span></b></div>
+            <div class="to">→</div>
+            <div class="after"><span class="lbl"><span data-en>After</span><span data-tr>Sonra</span></span><b><span data-en>Autonomous</span><span data-tr>Otonom</span></b></div>
+            <div class="what"><span data-en>Weekly reporting</span><span data-tr>Haftalık raporlama</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div class="cta-glow" aria-hidden="true"></div>
+  <div class="wrap">
+    <h2 class="grad-text"><span data-en>Let's begin cooperation</span><span data-tr>Hadi iş birliğine başlayalım</span></h2>
+    <p>
+      <span data-en>Tell us about your brand and we'll match it with the right desk — content, agents, or both.</span>
+      <span data-tr>Markanızı anlatın, sizi doğru masayla eşleştirelim — içerik, ajanlar ya da ikisi birden.</span>
+    </p>
+    <a class="btn btn-grad" href="https://wa.me/905342459364" target="_blank" rel="noopener">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.48 1.34 5L2 22l5.2-1.36a9.9 9.9 0 004.84 1.24h.01c5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2zm5.8 14.06c-.24.68-1.4 1.3-1.94 1.38-.5.08-1.12.1-1.8-.12-.42-.14-.96-.32-1.64-.62-2.9-1.26-4.78-4.18-4.92-4.38-.14-.2-1.18-1.56-1.18-2.98s.74-2.12 1-2.4c.26-.28.56-.36.76-.36h.54c.18 0 .42-.06.64.5l.88 2.12c.08.16.12.34.02.54-.1.2-.14.32-.28.5l-.42.48c-.14.14-.28.3-.12.58.16.28.72 1.18 1.54 1.92 1.06.94 1.94 1.24 2.22 1.38.28.14.44.12.6-.08.16-.2.7-.82.88-1.1.18-.28.36-.24.62-.14l2 .94c.26.12.44.18.5.28.06.1.06.62-.18 1.3z"/></svg>
+      <span data-en>Message on WhatsApp</span><span data-tr>WhatsApp'tan yaz</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="foot-mark"><svg width="24" height="24"><use href="#logo"/></svg></span>
+    <div class="foot-name">Otillion</div>
+    <div class="tagline"><span data-en>Cinematic content. Intelligent systems.</span><span data-tr>Sinematik içerik. Akıllı sistemler.</span></div>
+    <div class="foot-links">
+      <a href="#media"><span data-en>Media</span><span data-tr>Medya</span></a>
+      <a href="#ai"><span data-en>AI agents</span><span data-tr>Yapay zekâ ajanları</span></a>
+      <a href="#cases"><span data-en>Cases</span><span data-tr>Vakalar</span></a>
+      <a href="https://wa.me/905342459364" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://instagram.com/jalal.jalab" target="_blank" rel="noopener">Instagram</a>
+    </div>
+    <div class="copy">© <span id="yr">2026</span> Otillion — Adana, Türkiye</div>
+  </div>
+</footer>
+
+<script>
+  /* ---- language ---- */
+  function setLang(l){
+    document.documentElement.setAttribute('data-lang', l);
+    document.documentElement.setAttribute('lang', l);
+    document.getElementById('b-en').classList.toggle('on', l === 'en');
+    document.getElementById('b-tr').classList.toggle('on', l === 'tr');
+    try { localStorage.setItem('otillion-lang', l); } catch (e) {}
+  }
+  try {
+    var saved = localStorage.getItem('otillion-lang');
+    if (saved === 'tr') setLang('tr');
+  } catch (e) {}
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  /* ---- marquee ---- */
+  (function(){
+    var words = ['Media production','AI agents','Social content','Workflow automation','Campaign video','Voice agents','Post-production','Ops automation'];
+    var track = document.getElementById('track');
+    var html = '';
+    for (var pass = 0; pass < 2; pass++){
+      for (var i = 0; i < words.length; i++){
+        html += '<span>' + words[i] + '</span><span class="dot">•</span>';
+      }
+    }
+    track.innerHTML = html;
+  })();
+
+  /* ---- neural sphere ---- */
+  (function(){
+    var cv = document.getElementById('sphere');
+    if (!cv) return;
+    var ctx = cv.getContext('2d');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var N = 190, pts = [], W = 0, H = 0, R = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    for (var i = 0; i < N; i++){
+      var y = 1 - (i / (N - 1)) * 2;
+      var r = Math.sqrt(Math.max(0, 1 - y * y));
+      var th = Math.PI * (3 - Math.sqrt(5)) * i;
+      pts.push({ x: Math.cos(th) * r, y: y, z: Math.sin(th) * r });
+    }
+
+    function resize(){
+      var rect = cv.getBoundingClientRect();
+      W = rect.width; H = rect.height;
+      cv.width = W * dpr; cv.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      R = Math.min(W, H) * 0.34;
+    }
+
+    function draw(t){
+      ctx.clearRect(0, 0, W, H);
+      var cx = W / 2, cy = H / 2;
+      var a = t * 0.00016, b = Math.sin(t * 0.0001) * 0.35;
+      var p = [];
+      for (var i = 0; i < N; i++){
+        var s = pts[i];
+        var x1 = s.x * Math.cos(a) - s.z * Math.sin(a);
+        var z1 = s.x * Math.sin(a) + s.z * Math.cos(a);
+        var y1 = s.y * Math.cos(b) - z1 * Math.sin(b);
+        var z2 = s.y * Math.sin(b) + z1 * Math.cos(b);
+        var k = 1.9 / (2.6 - z2);
+        p.push({ sx: cx + x1 * R * k, sy: cy + y1 * R * k, d: (z2 + 1) / 2 });
+      }
+
+      // core glow
+      var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 1.5);
+      g.addColorStop(0, 'rgba(90,160,255,.55)');
+      g.addColorStop(0.35, 'rgba(110,80,255,.16)');
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+
+      // links
+      ctx.lineWidth = 0.6;
+      for (var i = 0; i < N; i++){
+        for (var j = i + 1; j < N; j++){
+          var dx = p[i].sx - p[j].sx, dy = p[i].sy - p[j].sy;
+          var dist = dx * dx + dy * dy;
+          if (dist < (R * 0.42) * (R * 0.42)){
+            var al = (1 - Math.sqrt(dist) / (R * 0.42)) * 0.32 * p[i].d;
+            ctx.strokeStyle = 'rgba(150,130,255,' + al.toFixed(3) + ')';
+            ctx.beginPath();
+            ctx.moveTo(p[i].sx, p[i].sy);
+            ctx.lineTo(p[j].sx, p[j].sy);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // nodes
+      for (var i = 0; i < N; i++){
+        var q = p[i];
+        ctx.beginPath();
+        ctx.arc(q.sx, q.sy, 0.7 + q.d * 1.7, 0, 6.2832);
+        ctx.fillStyle = 'rgba(' + Math.round(150 + q.d * 90) + ',' + Math.round(200 + q.d * 55) + ',255,' + (0.35 + q.d * 0.6).toFixed(2) + ')';
+        ctx.fill();
+      }
+    }
+
+    function loop(t){ draw(t); requestAnimationFrame(loop); }
+
+    resize();
+    window.addEventListener('resize', resize);
+    if (reduce) { draw(0); } else { requestAnimationFrame(loop); }
+  })();
+</script>
+</body>
+</html>
